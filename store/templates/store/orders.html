@@ -1,0 +1,111 @@
+
+{% extends 'store/base.html' %}
+
+{% block title %}My Orders - BookStore{% endblock %}
+
+{% block content %}
+
+<section class="page-header">
+
+    <div class="container">
+
+        <span class="small-label">
+            ORDER HISTORY
+        </span>
+
+        <h1>My Orders</h1>
+
+    </div>
+
+</section>
+
+
+<section class="section">
+
+    <div class="container">
+
+        {% for order in orders %}
+
+        <div class="order-card">
+
+            <div class="order-header">
+
+                <div>
+
+                    <span class="order-number">
+                        ORDER #{{ order.id }}
+                    </span>
+
+                    <p>
+                        {{ order.created_at|date:"d M Y, h:i A" }}
+                    </p>
+
+                </div>
+
+
+                <span class="order-status">
+                    {{ order.status }}
+                </span>
+
+            </div>
+
+
+            <div class="order-body">
+
+                {% for item in order.items.all %}
+
+                <div class="order-item">
+
+                    <span>
+                        {{ item.book.title }}
+                        × {{ item.quantity }}
+                    </span>
+
+                    <strong>
+                        ₹{{ item.price }}
+                    </strong>
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+
+            <div class="order-total">
+
+                <span>Total</span>
+
+                <strong>
+                    ₹{{ order.total_amount }}
+                </strong>
+
+            </div>
+
+        </div>
+
+        {% empty %}
+
+        <div class="empty-state">
+
+            <h2>No orders yet</h2>
+
+            <p>
+                Your orders will appear here.
+            </p>
+
+            <a href="{% url 'books' %}"
+               class="primary-btn">
+                Start Shopping
+            </a>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+{% endblock %}
+

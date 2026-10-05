@@ -1,0 +1,136 @@
+
+{% extends 'store/base.html' %}
+
+{% block title %}Books - BookStore{% endblock %}
+
+{% block content %}
+
+<section class="page-header">
+
+    <div class="container">
+
+        <span class="small-label">
+            OUR COLLECTION
+        </span>
+
+        <h1>Books</h1>
+
+        <p>
+            Explore our complete collection.
+        </p>
+
+    </div>
+
+</section>
+
+
+<section class="section">
+
+    <div class="container">
+
+        <div class="filter-bar">
+
+            <form method="GET" class="search-form">
+
+                <input
+                    type="text"
+                    name="q"
+                    placeholder="Search books or authors..."
+                    value="{{ query|default:'' }}"
+                >
+
+                <button type="submit">
+                    Search
+                </button>
+
+            </form>
+
+
+            <div class="categories-filter">
+
+                <a href="{% url 'books' %}">
+                    All
+                </a>
+
+                {% for category in categories %}
+
+                <a href="?category={{ category.id }}">
+                    {{ category.name }}
+                </a>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+
+        <div class="book-grid">
+
+            {% for book in books %}
+
+            <div class="book-card">
+
+                <div class="book-image">
+
+                    {% if book.image %}
+
+                    <img src="{{ book.image.url }}"
+                         alt="{{ book.title }}">
+
+                    {% else %}
+
+                    <div class="no-image">
+                        No Image
+                    </div>
+
+                    {% endif %}
+
+                </div>
+
+
+                <div class="book-info">
+
+                    <span class="category">
+                        {{ book.category.name }}
+                    </span>
+
+                    <h3>{{ book.title }}</h3>
+
+                    <p class="author">
+                        {{ book.author }}
+                    </p>
+
+                    <div class="book-bottom">
+
+                        <strong>
+                            ₹{{ book.price }}
+                        </strong>
+
+                        <a href="{% url 'book_detail' book.id %}">
+                            View
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            {% empty %}
+
+            <div class="empty-state">
+                <h2>No books found</h2>
+                <p>Try another search.</p>
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}
+

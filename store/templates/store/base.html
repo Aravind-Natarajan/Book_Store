@@ -1,0 +1,88 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}BookStore{% endblock %}</title>
+
+    <link rel="stylesheet"
+          href="{% static 'store/style.css' %}">
+</head>
+
+<body>
+
+<header class="navbar">
+
+    <div class="container nav-content">
+
+        <a href="{% url 'home' %}" class="logo">
+            BookStore
+        </a>
+
+        <nav>
+
+            <a href="{% url 'home' %}">Home</a>
+
+            <a href="{% url 'books' %}">Books</a>
+
+            {% if user.is_authenticated %}
+
+                <a href="{% url 'orders' %}">My Orders</a>
+
+                <a href="{% url 'cart' %}" class="cart-link">
+                    Cart
+                </a>
+
+                <a href="{% url 'logout' %}">Logout</a>
+
+            {% else %}
+
+                <a href="{% url 'login' %}">Login</a>
+
+                <a href="{% url 'register' %}" class="nav-btn">
+                    Register
+                </a>
+
+            {% endif %}
+
+        </nav>
+
+    </div>
+
+</header>
+
+
+<main>
+
+    {% block content %}
+    {% endblock %}
+
+</main>
+
+
+<footer>
+
+    <div class="container footer-content">
+
+        <div>
+            <h3>BookStore</h3>
+            <p>
+                Discover your next favorite book.
+            </p>
+        </div>
+
+        <div>
+            <p>© 2026 BookStore</p>
+        </div>
+
+    </div>
+
+</footer>
+
+</body>
+</html>
+

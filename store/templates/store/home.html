@@ -1,0 +1,471 @@
+{% extends 'store/base.html' %}
+
+{% block title %}Home - BookStore{% endblock %}
+
+{% block content %}
+{% load static %}
+
+<style>
+    /* =========================
+   HERO SECTION
+========================= */
+
+.hero {
+    min-height: 400px;
+    display: flex;
+    align-items: center;
+    background: #ffffff;
+    overflow: hidden;
+}
+
+.hero-content {
+    /* width: 100%; */
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+    gap: 70px;
+}
+
+
+/* =========================
+   HERO TEXT
+========================= */
+
+.hero-text {
+    max-width: 600px;
+}
+
+.hero-text .small-label {
+    display: inline-block;
+    margin-bottom: 20px;
+}
+
+.hero-text h1 {
+    font-size: 64px;
+    line-height: 1.05;
+    margin: 0 0 25px;
+    font-weight: 700;
+    letter-spacing: -2px;
+}
+
+.hero-text h1 span {
+    display: block;
+}
+
+.hero-text p {
+    max-width: 500px;
+    font-size: 17px;
+    line-height: 1.7;
+    color: #666;
+    margin-bottom: 30px;
+}
+
+
+/* =========================
+   HERO IMAGE
+========================= */
+
+.hero-image-wrapper {
+    position: relative;
+    width: 100%;
+    min-height: 480px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+/* Square Image */
+
+.hero-image-box {
+    width: 390px;
+    height: 390px;
+
+    position: relative;
+    z-index: 2;
+
+    overflow: hidden;
+
+    border-radius: 18px;
+
+    background: #f5f5f5;
+
+    border: 1px solid #e5e5e5;
+
+    box-shadow:
+        0 25px 60px rgba(0, 0, 0, 0.12);
+
+    animation: heroFloat 4s ease-in-out infinite;
+
+    transition:
+        transform 0.5s ease,
+        box-shadow 0.5s ease;
+}
+
+
+/* Image */
+
+.hero-image-box img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    display: block;
+
+    transition:
+        transform 0.6s ease,
+        filter 0.6s ease;
+}
+
+
+/* Hover */
+
+.hero-image-box:hover {
+    transform: translateY(-10px) rotate(1deg);
+
+    box-shadow:
+        0 35px 80px rgba(0, 0, 0, 0.18);
+}
+
+.hero-image-box:hover img {
+    transform: scale(1.08);
+}
+
+
+/* No Image */
+
+.hero-no-image {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: 3px;
+
+    color: #111;
+}
+
+
+/* =========================
+   FLOAT ANIMATION
+========================= */
+
+@keyframes heroFloat {
+
+    0% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-12px);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
+
+}
+
+
+/* =========================
+   DECORATIVE CIRCLES
+========================= */
+
+.hero-circle {
+    position: absolute;
+
+    border-radius: 50%;
+
+    border: 1px solid #ddd;
+
+    z-index: 1;
+
+    animation: circleFloat 5s ease-in-out infinite;
+}
+
+.circle-one {
+    width: 460px;
+    height: 460px;
+}
+
+.circle-two {
+    width: 520px;
+    height: 520px;
+
+    border-color: #eeeeee;
+
+    animation-delay: 1s;
+}
+
+
+@keyframes circleFloat {
+
+    0% {
+        transform: scale(1);
+        opacity: 0.7;
+    }
+
+    50% {
+        transform: scale(1.05);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 0.7;
+    }
+
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 900px) {
+
+    .hero {
+        min-height: auto;
+        padding: 80px 0;
+    }
+
+    .hero-content {
+        grid-template-columns: 1fr;
+        gap: 60px;
+    }
+
+    .hero-text {
+        max-width: 100%;
+        text-align: center;
+    }
+
+    .hero-text p {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .hero-image-wrapper {
+        min-height: 420px;
+    }
+
+}
+
+
+@media (max-width: 500px) {
+
+    .hero-text h1 {
+        font-size: 42px;
+    }
+
+    .hero-image-box {
+        width: 300px;
+        height: 300px;
+    }
+
+    .circle-one {
+        width: 350px;
+        height: 350px;
+    }
+
+    .circle-two {
+        width: 400px;
+        height: 400px;
+    }
+
+}
+</style>
+
+<section class="hero">
+
+    <div class="container hero-content">
+
+        <!-- LEFT CONTENT -->
+        <div class="hero-text">
+
+            <span class="small-label">
+                WELCOME TO BOOKSTORE
+            </span>
+
+            <h1>
+                Find your next
+                <span>great read.</span>
+            </h1>
+
+            <p>
+                Explore thousands of books from different
+                categories and discover stories that inspire you.
+            </p>
+
+            <a href="{% url 'books' %}" class="primary-btn">
+                Explore Books
+            </a>
+
+        </div>
+
+
+        <!-- RIGHT IMAGE -->
+        <div class="hero-image-wrapper">
+
+            <div class="hero-image-box">
+
+                {% if books %}
+                    {% with book=books.0 %}
+
+                    {% if book.image %}
+                        <img src="{% static 'images/book.webp' %}"
+                             alt="image">
+                    {% else %}
+                        <div class="hero-no-image">
+                            BOOKSTORE
+                        </div>
+                    {% endif %}
+
+                    {% endwith %}
+
+                {% else %}
+
+                    <div class="hero-no-image">
+                        BOOKSTORE
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+            <!-- Decorative Elements -->
+            <div class="hero-circle circle-one"></div>
+            <div class="hero-circle circle-two"></div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="section">
+
+    <div class="container">
+
+        <div class="section-header">
+
+            <div>
+                <span class="small-label">DISCOVER</span>
+                <h2>Latest Books</h2>
+            </div>
+
+            <a href="{% url 'books' %}" class="view-link">
+                View All →
+            </a>
+
+        </div>
+
+
+        <div class="book-grid">
+
+            {% for book in books %}
+
+            <div class="book-card">
+
+                <div class="book-image">
+
+                    {% if book.image %}
+
+                    <img src="{{ book.image.url }}"
+                         alt="{{ book.title }}">
+
+                    {% else %}
+
+                    <div class="no-image">
+                        No Image
+                    </div>
+
+                    {% endif %}
+
+                </div>
+
+
+                <div class="book-info">
+
+                    <span class="category">
+                        {{ book.category.name }}
+                    </span>
+
+                    <h3>{{ book.title }}</h3>
+
+                    <p class="author">
+                        {{ book.author }}
+                    </p>
+
+                    <div class="book-bottom">
+
+                        <strong>
+                            ₹{{ book.price }}
+                        </strong>
+
+                        <a href="{% url 'book_detail' book.id %}">
+                            View
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            {% empty %}
+
+            <p>No books available.</p>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="section categories-section">
+
+    <div class="container">
+
+        <div class="section-header">
+
+            <div>
+                <span class="small-label">BROWSE</span>
+                <h2>Categories</h2>
+            </div>
+
+        </div>
+
+
+        <div class="category-grid">
+
+            {% for category in categories %}
+
+            <a href="{% url 'books' %}?category={{ category.id }}"
+               class="category-card">
+
+                <h3>{{ category.name }}</h3>
+
+                <span>Explore →</span>
+
+            </a>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}
+

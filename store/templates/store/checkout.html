@@ -1,0 +1,89 @@
+
+{% extends 'store/base.html' %}
+
+{% block title %}Checkout - BookStore{% endblock %}
+
+{% block content %}
+
+<section class="page-header">
+
+    <div class="container">
+
+        <span class="small-label">
+            CHECKOUT
+        </span>
+
+        <h1>Complete Your Order</h1>
+
+    </div>
+
+</section>
+
+
+<section class="section">
+
+    <div class="container">
+
+        <div class="checkout-layout">
+
+            <div class="checkout-form">
+
+                <h2>Delivery Details</h2>
+
+                <form method="POST">
+
+                    {% csrf_token %}
+
+                    {{ form.as_p }}
+
+                    <button type="submit"
+                            class="primary-btn full-btn">
+                        Place Order
+                    </button>
+
+                </form>
+
+            </div>
+
+
+            <div class="checkout-summary">
+
+                <h2>Order Summary</h2>
+
+                {% for item in items %}
+
+                <div class="summary-book">
+
+                    <span>
+                        {{ item.book.title }}
+                        × {{ item.quantity }}
+                    </span>
+
+                    <strong>
+                        ₹{{ item.total_price }}
+                    </strong>
+
+                </div>
+
+                {% endfor %}
+
+                <hr>
+
+                <div class="summary-total">
+
+                    <span>Total</span>
+
+                    <strong>₹{{ total }}</strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}
+
